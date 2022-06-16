@@ -15,6 +15,7 @@ export default {
 
 <style>
 .sendBtn {
+    cursor: pointer;
     padding: 10px 20px;
     border-radius: 11px;
     background-color: #4E5166 ;

@@ -2,22 +2,23 @@
     <div class="form">
         <div class="containerInput" v-if="isSignup">
             <label for="">Nom:</label>
-            <input type="text" class="modalForm" placeholder="  Dupont">
+            <input type="text" class="modalForm" placeholder="Dupont">
         </div>
         <div class="containerInput" v-if="isSignup">
             <label for="">Prenom:</label>
-            <input type="text" class="modalForm" placeholder="  Jean">
+            <input type="text" class="modalForm" placeholder="Jean">
         </div>
         <div class="containerInput ">
             <label for="">Email:</label>
-            <input type="text" class="modalForm" placeholder="  Jean.Dupont@contact.fr">
+            <input type="email" class="modalForm" placeholder="Jean.Dupont@contact.fr">
         </div>
         <div class="containerInput ">
             <label for="">Mot de passe:</label>
-            <input type="text" class="modalForm" placeholder="  8 caractères minimum (1 majuscule, 1 chiffre obligatoire)">
+            <input type="password" class="modalForm" placeholder="8 caractères minimum (1 majuscule, 1 chiffre obligatoire)" >
         </div>
     </div>
-    <p>{{ help }}</p>
+    <router-link to="/login"><p>{{ help }}</p></router-link>
+    <router-view/>
 </template>
 
 <script>
@@ -39,6 +40,9 @@ export default {
 .form {
     margin: 6% 0;
 }
+ p {
+    text-decoration: none;
+}
    .containerInput {
     width: 100%;
     display: flex;
@@ -55,6 +59,7 @@ export default {
     width: 60%;
     margin: 20px 0;
     border-radius: 11px;
+    padding-left: 20px;
 
    }
 </style>
