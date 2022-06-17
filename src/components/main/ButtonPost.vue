@@ -18,6 +18,6 @@ export default {
         border-radius: 20px;
         margin: 5px auto 10px auto;
         cursor: pointer;
-        border: solid 1px #fd2b01;
+        border: solid 1px #fD2D01;
     }
 </style>

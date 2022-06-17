@@ -20,7 +20,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     header {
         display: flex;
         height: 10vh;

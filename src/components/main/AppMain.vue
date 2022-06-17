@@ -1,25 +1,32 @@
 <template>
     <main class="app">
         <div class="add-comment">
-        <textarea rows="1" cols="5">Quoi de neuf à nous raconter ?</textarea>
-        <button>publier</button>
+        <button  class="write-post"  >{{ message}}</button>
         </div>
         <PostContent />
         <PostContent />
     </main>
-    
+    <ModalPost />
 </template>
 
 <script>
+import ModalPost from "./ModalPost.vue"
 import PostContent from './PostContent.vue'
 export default {
+    data() {
+        return {
+            message: "Quoi de neuf à nous raconter ?"
+        }
+    },
     components: {
-        PostContent
+        PostContent, ModalPost
     }
+   
 }
 </script>
 
 <style scoped>
+  
     .add-comment {
     display: flex;
     width: 100%;
@@ -37,19 +44,13 @@ export default {
         border-radius: 11px;
        
     }
-    textarea{
+    .write-post{
         height: 3vh;
         width: 50%;
-        margin: 20px 20px 20px 20% ; 
+        margin: 20px auto ; 
         border-radius: 11px;
+        padding: 5px;
+        cursor: pointer;
     }
-    button {
-       height: 3vh;
-       border-radius: 11px;
-       margin-right: 50px;
-       margin: 20px;
-       cursor: pointer;
-       background-color: #4E5166;
-       color: white;
-    }
+    
 </style>
