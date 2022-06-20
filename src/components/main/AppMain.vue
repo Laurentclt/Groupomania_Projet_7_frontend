@@ -1,7 +1,7 @@
 <template>
     <main class="app">
         <div class="add-comment">
-        <button  class="write-post"  >{{ message}}</button>
+            <button  class="write-post" @click="toggleModal">{{ message}}</button>
         </div>
         <PostContent />
         <PostContent />
@@ -15,11 +15,17 @@ import PostContent from './PostContent.vue'
 export default {
     data() {
         return {
-            message: "Quoi de neuf à nous raconter ?"
+            message: "Quoi de neuf à nous raconter ?",
         }
     },
     components: {
         PostContent, ModalPost
+    },
+    methods: {
+        toggleModal() {
+           
+            console.log('ouvrir fenêtre')
+        }
     }
    
 }

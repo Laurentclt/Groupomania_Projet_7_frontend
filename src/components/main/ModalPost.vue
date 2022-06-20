@@ -1,5 +1,5 @@
 <template>
-    <div class="backdrop" @click.self="closeWindow" v-if="show">
+    <div class="backdrop" @click.self="closeWindow" >
         <div class="modal-window">
             <h1>Créer une publication</h1>
             <textarea name="post" id="post" cols="30" rows="10" @click="resetText" v-model="message"></textarea>
@@ -16,20 +16,20 @@ export default {
     data() {
         return {
             message: "Quoi de neuf à nous raconter ?",
-            show: true
+           
         }
     }, methods: {
         resetText() {
             this.message=''
         },
         closeWindow() {
-            this.show = !this.show
+            console.log("fenêtre fermée")
         }
     }, props: {
         isActive: {
             type: Boolean,
-            default:false
-        }
+            default:false,
+        },
     }
 }
 </script>
