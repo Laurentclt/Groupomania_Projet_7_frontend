@@ -1,10 +1,12 @@
 <template>
-    <div class="backdrop" @click.self="closeWindow" >
+    <div class="backdrop" @click.self="$emit('close')" >
         <div class="modal-window">
             <h1>Créer une publication</h1>
             <textarea name="post" id="post" cols="30" rows="10" @click="resetText" v-model="message"></textarea>
             <div class="container-btn">
-                <button class="modal-btn">ajouter image</button>
+                
+                <input type="file" class="add-image"  >
+                    
                 <button class="modal-btn">publier</button>
             </div>
         </div>
@@ -12,25 +14,19 @@
 </template>
 
 <script>
+
 export default {
     data() {
         return {
             message: "Quoi de neuf à nous raconter ?",
-           
         }
-    }, methods: {
+    },
+    methods: {
         resetText() {
             this.message=''
         },
-        closeWindow() {
-            console.log("fenêtre fermée")
-        }
-    }, props: {
-        isActive: {
-            type: Boolean,
-            default:false,
-        },
-    }
+    }, 
+
 }
 </script>
 
@@ -42,7 +38,7 @@ export default {
     z-index: 4;
     height: 100vh;
     width: 100vw;
-    background-color: rgba(255, 255, 255, 0.801);
+    background-color: rgba(255, 255, 255, 0.901);
    } 
    .modal-window {
     display: flex;
@@ -62,5 +58,9 @@ export default {
     background-color: #FD2D01;
     color: white;
     cursor: pointer;
+   }
+   .add-image {
+    padding: 10px;
+    
    }
 </style>

@@ -6,7 +6,8 @@
         <PostContent />
         <PostContent />
     </main>
-    <ModalPost />
+    <ModalPost v-if="showModal" @close = "showModal = false" />
+    
 </template>
 
 <script>
@@ -16,15 +17,15 @@ export default {
     data() {
         return {
             message: "Quoi de neuf à nous raconter ?",
+            showModal : false
         }
     },
     components: {
-        PostContent, ModalPost
+        PostContent, ModalPost, 
     },
     methods: {
         toggleModal() {
-           
-            console.log('ouvrir fenêtre')
+            this.showModal = true
         }
     }
    

@@ -8,15 +8,29 @@
             <div class="profile-img"></div>
             <div class="container-profile">
                 <p>FirstName Lastname</p>
-                <button class="edit-btn">éditer le profil</button>
+                <button class="edit-btn" @click="editProfile" >éditer le profil</button>
             </div>
         </div>
     </header>
+    <ModalEditProfile v-if="modalEdit" @close = "modalEdit = false" />
 </template>
 
 <script>
+import ModalEditProfile from './ModalEditProfile.vue'
 export default {
-    
+    components: {
+        ModalEditProfile
+    },
+    data() {
+        return {
+            modalEdit: false 
+        }
+    },
+    methods: {
+            editProfile() {
+                this.modalEdit = !this.modalEdit
+            }
+        }
 }
 </script>
 
@@ -53,7 +67,7 @@ export default {
         display: flex;
         width: 20%;
         height: 100%;
-        justify-content: space-around;
+        justify-content: left;
     }
     .right .profile-img{
         border-radius: 20px;
