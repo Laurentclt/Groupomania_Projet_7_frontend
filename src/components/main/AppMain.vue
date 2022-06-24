@@ -3,6 +3,7 @@
         <div class="add-comment">
             <button  class="write-post" @click="toggleModal">{{ message}}</button>
         </div>
+        <!-- utiliser v-for pour récuperer tous les posts de l'api -->
         <PostContent />
         <PostContent />
     </main>
@@ -52,7 +53,7 @@ export default {
        
     }
     .write-post{
-        height: 3vh;
+        height: auto;
         width: 50%;
         margin: 20px auto ; 
         border-radius: 11px;

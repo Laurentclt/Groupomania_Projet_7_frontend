@@ -1,5 +1,5 @@
 <template>
-    <button class="sendBtn">{{ message }}</button>
+    <button class="sendBtn" @click="action" >{{ message }}</button>
 </template>
 
 <script>
@@ -8,6 +8,10 @@ export default {
         message: {
             type : String,
             default : "error"
+        },
+        action: {
+            type : Function,
+            required: true
         }
     }
 }

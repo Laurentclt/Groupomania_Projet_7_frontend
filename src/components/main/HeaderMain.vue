@@ -70,7 +70,7 @@ export default {
         justify-content: left;
     }
     .right .profile-img{
-        border-radius: 20px;
+        border-radius: 25px;
         background-color: black;
         width: 50px;
         height: 50px;
@@ -82,6 +82,7 @@ export default {
     }
     .container-profile p {
         color: #FD2D01;
+        margin: 10px;
     }
     .edit-btn {
         padding: 5px 0;

@@ -14,13 +14,21 @@ export default {
 
 header {
     display:block;
-    height: 20vh;
+    height: 15vh;
     color: white;
+    margin-bottom: 30px;
 }
 header img {
     margin: auto;
-    margin-bottom: 30px;
+    
+    width: 100%;
+    max-width: 375px;
 }
-
+@media  (max-width: 600px) {
+    header img  {
+        height: 100%;
+    }
+    
+}
 
 </style>

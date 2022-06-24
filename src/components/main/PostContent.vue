@@ -3,7 +3,7 @@
     <div class="profile-pic">img<img src="" alt=""></div>
     <div class="content">
         <p>user name + (date)</p>
-        <p>content : lorem ipsum ddddddddddddddddddddddddddddddddddddddddd</p>
+        <p>content : lorem ipsum dddddddddd ddddddddddd ddddddddd ddddddddddd</p>
     </div>
     </article>
     <div class="button-post">
@@ -45,22 +45,23 @@ export default {
         display: flex;
         padding-top: 20px;
         border-top: #fd2b0137 solid 1px;
+        justify-content: center;
     }
     .comment {
         display: flex;
         padding: 5px 0;
+        justify-content: center;
     }
     .comment input{
-        margin: 10px;
+        margin: 10px 0;
         width: 80%;
-        margin: auto;
         border-radius: 11px;
         padding: 5px;
     }
     .content{
         background-color: white;
         width: 80%;
-        margin: 0 auto;
+        margin: 0 ;
         border-radius: 11px;
     }
     .content p {
@@ -72,7 +73,7 @@ export default {
         height: 30px;
         width:30px;
         background-color: #FD2D01;
-        margin: auto 10px;
+        margin:  10px;
         border-radius: 30px;
     }
     .button-post {
