@@ -3,11 +3,11 @@
         <div class="modal-window">
             <h1>Editer le profil</h1>
             <label>Prénom :</label>
-            <input type="text">
+            <input type="text" v-model="firstname">
             <label>Nom :</label>
-            <input type="text">
+            <input type="text" v-model="lastname">
             <label>Email :</label>
-            <input type="text">
+            <input type="text" v-model="email">
             <label>Photo de profil :</label>
             <input type="file">
             <div class="container-btn">
@@ -20,17 +20,59 @@
 
 <script>
 export default {
+    data() {
+        return {
+            firstname: localStorage.getItem("firstname"),
+            lastname: localStorage.getItem("lastname"),
+            email: localStorage.getItem("email"),
+            userId : localStorage.getItem("userId"),
+            token: localStorage.getItem("token")
+        }
+    },
     methods: {
         updateChanges() {
-            console.log("changements effetcués")
+            console.log("update enclenché")
+            const userId = this.userId
+            
+            const requestOptions = {
+            method: "PUT",
+            headers: { "Content-Type": "application/json", "Authorization" : `Bearer ${this.token}` },
+            body: JSON.stringify({firstName: this.firstname, lastName: this.lastname, email: this.email, userId: userId})
+            };
+            fetch(`http://localhost:3000/api/user/${userId}`, requestOptions)
+            .then(response => response.json())
+            .then(
+                localStorage.setItem("firstname", this.firstname),
+                localStorage.setItem("lastname", this.lastname),
+                localStorage.setItem("email", this.email),
+                document.location.reload()
+                )
+          
+            .catch(error => console.log("error", error))
+            
         },
         deleteAccount() {
+            const userId = this.userId
+            const loginView = this.$router.push("/login")
+            const goToView = function () {
+                return loginView
+            }
+            const requestOptions = {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json", "Authorization" : `Bearer ${this.token}` },
+            body: JSON.stringify({userId: this.userId})
+            };
             if (confirm("Êtes-vous sûr de vouloir supprimé votre compte ?") == true) {
-                console.log("compte supprimé");
+                fetch(`http://localhost:3000/api/user/${userId}`, requestOptions)
+                .then(
+                    alert("compte supprimé"),
+                    goToView()
+                )
+                
                 } else {
                 console.log("Opération annulée");
-}
-            
+
+                }
         }
     }
 }

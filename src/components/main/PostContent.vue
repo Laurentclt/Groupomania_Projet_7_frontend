@@ -2,9 +2,11 @@
     <article>
     <div class="profile-pic">img<img src="" alt=""></div>
     <div class="content">
-        <p>user name + (date)</p>
-        <p>content : lorem ipsum dddddddddd ddddddddddd ddddddddd ddddddddddd</p>
+        <p class="infos">{{post.user.firstName}} {{post.user.lastName}} <span class="date">( {{post.date}})</span> </p>
+        <p class="text-content">{{post.content}}</p>
     </div>
+     <button title="supprimer la publication" class="btn delete" v-if="isCreator"> X </button>
+     <button title="editer la publication" class="btn edit" v-if="isCreator"> ... </button>
     </article>
     <div class="button-post">
         <ButtonPost value="J'aime" @click="toggleLike" :class="{ liked: isLiked }" />
@@ -25,9 +27,19 @@ export default {
     data() {
         return {
             isLiked : false,
-            gotComments : true
+            gotComments : false,
+            isCreator: false,
         }
     },
+    props: {
+        post: {
+            type: Object,
+        },
+        userId: {
+            type: String
+        }
+    }
+    ,
     components: {ButtonPost, CommentThread},
     methods : {
         toggleLike() {
@@ -35,6 +47,11 @@ export default {
         },
         comment() {
             this.$refs.comment.focus()
+        },
+        checkCreator() {
+            if (this.userId === localStorage.getItem("userId")) {
+                this.isCreator = true
+            }
         }
     }
     
@@ -56,7 +73,7 @@ export default {
         margin: 10px 0;
         width: 80%;
         border-radius: 11px;
-        padding: 5px;
+        padding: 0 5px;
     }
     .content{
         background-color: white;
@@ -86,5 +103,16 @@ export default {
     .comment-space {
         height: auto;
         width: 100%;
+    }
+    .infos {
+        font-size: 12px;
+    }
+    .date {
+        color: red;
+        font-size: 12px;
+    }
+    .btn {
+        height: 30%;
+        justify-content: flex-end;
     }
 </style>

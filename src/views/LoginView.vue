@@ -1,6 +1,6 @@
 <template>
   <HeaderBar />
-  <ModalAuth :message= "message" :help= "help"/> 
+  <ModalAuth :message= "message" /> 
 </template>
 
 
@@ -13,7 +13,6 @@ export default {
       data(){
         return {
           message: 'connexion',
-          help: "Vous-avez oublié votre mot de passe ?"
         }
       }
 }

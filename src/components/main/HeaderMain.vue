@@ -7,7 +7,7 @@
         <div class="right">
             <div class="profile-img"></div>
             <div class="container-profile">
-                <p>FirstName Lastname</p>
+                <p>{{firstname}} {{lastname}}</p>
                 <button class="edit-btn" @click="editProfile" >éditer le profil</button>
             </div>
         </div>
@@ -16,13 +16,15 @@
 </template>
 
 <script>
-import ModalEditProfile from './ModalEditProfile.vue'
+import ModalEditProfile from './ModalEditProfile'
 export default {
     components: {
         ModalEditProfile
     },
     data() {
         return {
+            firstname: localStorage.getItem("firstname"),
+            lastname: localStorage.getItem("lastname"),
             modalEdit: false 
         }
     },

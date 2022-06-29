@@ -4,8 +4,11 @@
             <button  class="write-post" @click="toggleModal">{{ message}}</button>
         </div>
         <!-- utiliser v-for pour récuperer tous les posts de l'api -->
-        <PostContent />
-        <PostContent />
+        <section class="all-posts" >
+        <PostContent v-for="post in posts" v-bind:key="post._id" :post="post" :userId="post.userId" />
+       
+        </section>
+       
     </main>
     <ModalPost v-if="showModal" @close = "showModal = false" />
     
@@ -18,7 +21,9 @@ export default {
     data() {
         return {
             message: "Quoi de neuf à nous raconter ?",
-            showModal : false
+            showModal : false,
+            token: localStorage.getItem("token"),
+            posts: []
         }
     },
     components: {
@@ -28,9 +33,45 @@ export default {
         toggleModal() {
             this.showModal = true
         }
-    }
+       
+    },
+    mounted() {
+            const requestOptions = {
+            method: "GET",
+            headers: { "Content-Type": "application/json", "Authorization" : `Bearer ${this.token}` },
+            };
+            fetch("http://localhost:3000/api/posts", requestOptions)
+                .then(response => response.json())
+                .then((posts) => {
+                    console.log(posts)
+                    for (let post of posts) {
+                        fetch(`http://localhost:3000/api/user/${post.userId}`, requestOptions)
+                            .then(response => {
+                                let dataUser;
+                                if (response === null) {
+                                     let uknownUser = {
+                                        firstName: "Utilisateur",
+                                        lastName: "inconnu"
+                                    }
+                                    dataUser = uknownUser.JSON.parse()
+                                    console.log(dataUser)
+                                } else {
+                                    dataUser = response.json()
+                                }
+                                return dataUser;
+                            })
+                            .then((dataUser) => {
+                                console.log(post, dataUser)
+                                post.user = dataUser;
+                                this.posts.push(post);
+                            })
+                    }
+                
+                })
+        }
    
 }
+
 </script>
 
 <style scoped>
@@ -42,11 +83,12 @@ export default {
     }   
     .app {
         display: flex;
-        flex-flow: column wrap;
+        flex-flow: column ;
         max-width: 900px;
         width: 80%;
-        height: 80vh;
+        height: auto;
         margin: auto ;
+        padding-bottom: 5%;
         margin-top: 10vh;
         background-color: #FFD7D7;
         border-radius: 11px;

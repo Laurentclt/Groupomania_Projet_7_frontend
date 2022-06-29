@@ -10,6 +10,7 @@
 </template>
 
 <script>
+
 import ModalButton from './ModalButton.vue'
 import ModalForm from './ModalForm.vue'
 import SendButton from './SendButton.vue'
@@ -49,13 +50,13 @@ export default {
         this.password = this.$refs.form.$refs.password.value
         const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/
         const passwordChecked = this.password.match(re).input
-
-        const appView = this.$router.push('/app')
+        const loginView = () => this.$router.push('/login')
+        const appView = () => this.$router.push('/app')
         
 
         let requestGlobal = function() {
+            console.log('requestGlobal', window.location.href, window.location.href.indexOf("signup"));
             if (window.location.href.indexOf("signup") > -1) {
-                
                 const bodySignup = { lastName: lastname, firstName: firstname, email: email, password: passwordChecked }
                 return  {
                     body: bodySignup,
@@ -71,22 +72,30 @@ export default {
             }
         }
 
+        const option = requestGlobal();
+
         const requestOptions = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(requestGlobal().body)
+            body: JSON.stringify(option.body)
         };
         
         let accessApp = function() {
-            return appView
+            return appView()
+        }
+        let goToLogin = function () {
+            return loginView()
         }
         
-        fetch(`http://localhost:3000/api/user/auth/${requestGlobal().url}`, requestOptions)
+        
+        fetch(`http://localhost:3000/api/user/auth/${option.url}`, requestOptions)
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
-                if(requestGlobal().url === "signup") {
+                console.log("auth" ,option.url)
+                if(option.url === "signup") {
                     alert("Votre compte a bien été créé !")
+                    goToLogin()
                 }
                 else {
                     localStorage.setItem("token", data.token)

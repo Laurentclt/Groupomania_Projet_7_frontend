@@ -7,7 +7,7 @@
                 
                 <input type="file" class="add-image"  >
                     
-                <button class="modal-btn">publier</button>
+                <button class="modal-btn" @click="publish" >publier</button>
             </div>
         </div>
     </div>
@@ -19,12 +19,26 @@ export default {
     data() {
         return {
             message: "Quoi de neuf à nous raconter ?",
+            userId: localStorage.getItem("userId"),
+            token : localStorage.getItem("token")
         }
     },
     methods: {
         resetText() {
             this.message=''
         },
+        publish() {
+            const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": `bearer ${this.token}` },
+            body: JSON.stringify({content: this.message, userId: this.userId})
+            };
+            fetch("http://localhost:3000/api/posts", requestOptions)
+            .then((response) => response.json())
+            .then((data) => console.log(data))
+            .catch((error) => console.log(error))
+           
+        }
     }, 
 
 }

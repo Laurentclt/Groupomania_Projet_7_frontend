@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import SignupView from '../views/SignupView.vue'
 import LoginView from '../views/LoginView.vue'
 import MainApp from '../views/MainApp.vue'
+import ErrorView from '../views/ErrorView.vue'
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: '/app',
     name: '/app',
     component: MainApp
+  },
+  {
+    path: '/error',
+    name: '/error',
+    component: ErrorView
   }
 ]
 
