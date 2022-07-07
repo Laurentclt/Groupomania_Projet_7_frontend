@@ -1,7 +1,7 @@
 <template>
     <div class="backdrop" @click.self="$emit('close')" >
         <div class="modal-window">
-            <h1>Créer une publication</h1>
+            <h1>Modifier la publication</h1>
             <textarea name="post" id="post" cols="30" rows="10" @click="resetText" v-model="message"></textarea>
             <div class="container-btn">
                 <input type="file" class="add-image" ref="imageInput" @change="onChangeFile" name="IMAGE">
@@ -12,26 +12,25 @@
 </template>
 
 <script>
-
 export default {
+    
     data() {
         return {
-            message: "Quoi de neuf à nous raconter ?",
-            userId: localStorage.getItem("userId"),
-            token : localStorage.getItem("token"),
-            imageUrl: null,
+            message: this.postData.content,
+            userId: localStorage.getItem('userId'),
             file: undefined,
+            token: localStorage.getItem('token')
         }
     },
+    props: {
+        postData: {
+            type: Object,
+        },
+    },
     methods: {
-        onChangeFile(e) {
+       onChangeFile(e) {
             this.file = e.target.files[0]
             console.log(this.file)
-        },
-        resetText() {
-            if (this.message === "Quoi de neuf à nous raconter ?") {
-            this.message=''
-            }
         },
         publish() {
             const formData = new FormData()
@@ -39,34 +38,36 @@ export default {
             formData.append("userId", this.userId) // probleme de secu
             if (this.file ) {
                 formData.append("IMAGE", this.file )}
+            
             const requestOptions = {
-            method: "POST",
+            method: "PUT",
             headers: { "Authorization": `bearer ${this.token}` },
             body: formData,
-           
-            };
-            fetch("http://localhost:3000/api/posts", requestOptions)
-            .then((response) => response.json())
-            .then((data) =>  {
-                console.log(data)
-                this.$emit('close')
             }
-            )
+            fetch(`http://localhost:3000/api/posts/${this.postData._id}`, requestOptions)
+            .then(response => response.json())
+            .then(data => { console.log(data)
+                this.message = data.doc.content
+                console.log(data.doc)
+                this.file = data.doc.imageUrl
+                this.$emit('postUpdate', { message: this.message, image: this.file, chrono: data.doc.chrono, date: data.doc.date});
+                this.$emit('close')
+                })
             .catch((error) => console.log(error))
-           
         }
-    }, 
-
+    },
+    
 }
 </script>
 
+
 <style scoped>
    .backdrop {
-    position: absolute;
+    position: fixed;
     left:0;
     top: 0;
     z-index: 4;
-    height: 100vh;
+    height:100vh;
     width: 100vw;
     background-color: rgba(255, 255, 255, 0.901);
    } 
@@ -74,16 +75,15 @@ export default {
     display: flex;
     margin: 20% auto;
     flex-flow: column wrap;
-    height: auto;
+    height: 30%;
     width: 50%;
    }
    .container-btn {
         display: flex;
-        width: 100%;
    }
    .modal-btn {
     padding: 5px;
-    width: auto;
+    width: 15%;
     border-radius: 20px;
     margin:5px auto;
     background-color: #FD2D01;
@@ -92,13 +92,6 @@ export default {
    }
    .add-image {
     padding: 10px;
-    width: 100%
     
    }
-    @media (max-width: 750px) {
-        .modal-window {
-            width: 80%;
-        }
-       
-    }
 </style>

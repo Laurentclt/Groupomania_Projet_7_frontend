@@ -9,7 +9,7 @@
             <label>Email :</label>
             <input type="text" v-model="email">
             <label>Photo de profil :</label>
-            <input type="file">
+            <input type="file" class="form-control-file" name="IMAGE" accept="image/*" ref="myFile" @change="onChangeFile">
             <div class="container-btn">
                 <button class="modal-btn" @click="deleteAccount">supprimer mon compte</button>
                 <button class="modal-btn" @click="updateChanges">valider les changements</button>
@@ -26,27 +26,42 @@ export default {
             lastname: localStorage.getItem("lastname"),
             email: localStorage.getItem("email"),
             userId : localStorage.getItem("userId"),
-            token: localStorage.getItem("token")
+            token: localStorage.getItem("token"),
+            imageUrl: null,
+            file: undefined
         }
     },
     methods: {
+        onChangeFile(e) {
+            this.file = e.target.files[0]
+            console.log(this.file)
+        },
         updateChanges() {
-            console.log("update enclenché")
             const userId = this.userId
-            
+            const formData = new FormData() 
+            formData.append("firstName", this.firstname)
+            formData.append("lastName", this.lastname)
+            formData.append("email", this.email)
+            formData.append("userId", this.userId) // probleme de secu
+            if (this.file) {
+                formData.append("IMAGE", this.file )
+            }
             const requestOptions = {
             method: "PUT",
-            headers: { "Content-Type": "application/json", "Authorization" : `Bearer ${this.token}` },
-            body: JSON.stringify({firstName: this.firstname, lastName: this.lastname, email: this.email, userId: userId})
+            headers: {  "Authorization" : `Bearer ${this.token}` },
+            body: formData
+            
             };
             fetch(`http://localhost:3000/api/user/${userId}`, requestOptions)
             .then(response => response.json())
-            .then(
-                localStorage.setItem("firstname", this.firstname),
-                localStorage.setItem("lastname", this.lastname),
-                localStorage.setItem("email", this.email),
-                document.location.reload()
-                )
+            .then((data) => {
+                console.log(data)
+                localStorage.setItem("firstname", data.firstName),
+                localStorage.setItem("lastname", data.lastName),
+                localStorage.setItem("email", data.email)
+                this.$emit('dataUpdated', {firstname: data.firstName, lastname: data.lastName, email: data.email, imageProfil: data.imageProfil})
+                this.$emit('close')
+            })
           
             .catch(error => console.log("error", error))
             
@@ -66,6 +81,7 @@ export default {
                 fetch(`http://localhost:3000/api/user/${userId}`, requestOptions)
                 .then(
                     alert("compte supprimé"),
+                    localStorage.clear(),
                     goToView()
                 )
                 
@@ -73,7 +89,7 @@ export default {
                 console.log("Opération annulée");
 
                 }
-        }
+        },
     }
 }
 </script>
@@ -118,5 +134,9 @@ export default {
     cursor: pointer;
     justify-content: space-between;
    }
-   
+    @media (max-width: 750px) {
+        .modal-window {
+            width: 70%;
+        }
+    }
 </style>

@@ -90,20 +90,34 @@ export default {
         
         fetch(`http://localhost:3000/api/user/auth/${option.url}`, requestOptions)
             .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                console.log("auth" ,option.url)
+            .then(data => { console.log({data})
                 if(option.url === "signup") {
                     alert("Votre compte a bien été créé !")
                     goToLogin()
                 }
                 else {
-                    localStorage.setItem("token", data.token)
-                    localStorage.setItem("userId", data.userId)
-                    localStorage.setItem("firstname", data.firstName)
-                    localStorage.setItem("lastname", data.lastName)
-                    localStorage.setItem("email", data.email)
-                    accessApp()
+                    if(data.error) {
+                        alert(data.error)
+                    }
+                    else {
+                         const getOptions = {
+                            method: "GET",
+                            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${data.token}`, },
+                            };
+                        localStorage.setItem("userId", data.userId)
+                        localStorage.setItem("token", data.token)
+                        fetch(`http://localhost:3000/api/user/${data.userId}`, getOptions)
+                         .then(response => response.json())
+                         .then(data => { console.log(data) 
+                            localStorage.setItem("firstname", data.firstName)
+                            localStorage.setItem("lastname", data.lastName)
+                            localStorage.setItem("email", data.email)
+                            localStorage.setItem("imageProfil", data.imageProfil)
+                            console.log("after", data)
+                            accessApp()
+                         })
+                    
+                    }
                 }
             })
             .catch((error) => {
