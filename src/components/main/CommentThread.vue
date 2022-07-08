@@ -1,32 +1,48 @@
 <template>
   <div class="container">
-    <div class="profile-pic"><img :src="comment.infoUser.imageProfil" alt=""></div>
+    <div class="profile-pic"><img v-if="commentData.user[0].imageProfil" :src="commentData.user[0].imageProfil" ></div>
         <div class="comment">
-            <p class="infos">{{comment.infoUser.firstName}} {{comment.infoUser.lastName}} <span class="date">( {{comment.date}} )</span></p>
+            <p class="infos">{{commentData.user[0].firstName}} {{commentData.user[0].lastName}} <span class="date">( {{commentData.date}} )</span></p>
             <p>{{comment.content}}</p>
         </div>
         <div class="container-edit-btn">
             <button title="supprimer le commentaire" class="btn delete" v-if="isCreator" @click="deleteComment"> X </button>
             <button title="editer le commentaire" class="btn edit" v-if="isCreator" @click="modifyComment"> ... </button>
         </div>
+        <ModalEditComment v-if="showModalCommentEdit" @close="showModalCommentEdit = false"  @commentUpdate="refreshComment" :commentData="commentData" />
   </div>
 </template>
 
 <script>
+import ModalEditComment from './ModalEditComment'
+
+
 export default {
     data() {
         return {
+            commentData: this.comment,
+            showModalCommentEdit: false,
             isCreator: this.comment.isCreator,
             userId: localStorage.getItem('userId'),
             token: localStorage.getItem('token')
         }
     },
+    components: {ModalEditComment},
     props: {
         comment: {
             type: Object
         }
     },
     methods: {
+        refreshComment(payload) {
+            console.log('payload', payload);
+            if(payload.message) {
+                this.commentData.content = payload.message;
+            }
+            this.commentData.chrono = payload.chrono
+            this.commentData.date = payload.date
+            console.log(this.postData)
+        },
         deleteComment() {
             const requestOptions = {
                 method: "DELETE",
@@ -41,9 +57,7 @@ export default {
             })
         },
         modifyComment() {
-            console.log(this.userId)
-            console.log(this.comment)
-            
+            this.showModalCommentEdit = true
         }
     },
     emits: ['commentDeleted']

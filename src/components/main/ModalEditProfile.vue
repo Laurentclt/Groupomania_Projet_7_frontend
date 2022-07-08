@@ -96,7 +96,7 @@ export default {
 
 <style scoped>
 .backdrop {
-    position: absolute;
+    position: fixed;
     left:0;
     top: 0;
     z-index: 4;

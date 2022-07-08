@@ -1,8 +1,8 @@
 <template>
     <div class="post">
-        <div class="container-photo"><img class="photo-profil" :src="postData.user.imageProfil" ></div>
+        <div class="container-photo"><img class="photo-profil" v-if="postData.user[0].imageProfil" :src="postData.user[0].imageProfil" ></div>
         <div class="content">
-            <p class="infos">{{postData.user.firstName}} {{postData.user.lastName}} <span class="date">( {{postData.date}})</span> </p>
+            <p class="infos">{{postData.user[0].firstName}} {{postData.user[0].lastName}} <span class="date">( {{postData.date}})</span> </p>
             <img class="post-image" :src="postData.imageUrl" >
             <div class="container-text-like">
                 <p class="text-content">{{this.postData.content}}</p>
@@ -36,7 +36,7 @@ import ModalPostEdit from "./ModalPostEdit.vue"
 export default {
     data() {
         return {
-            isAdmin: false,
+            isAdmin: this.checkAdmin,
             postData: this.post,
             gotComments : false,
             isCreator: this.post.isCreator,
@@ -52,45 +52,44 @@ export default {
         post: {
             type: Object,
         },
+        checkAdmin: {
+            type: Boolean
+        }
     }
     ,
     components: {ButtonPost, CommentThread, ModalPostEdit},
     methods : {
         fillComments() {
-            const requestOptions = {
-                method: "GET",
-                headers: { "Content-Type": "application/json", "Authorization" : `Bearer ${this.token}` },
-            }
-        fetch(`http://localhost:3000/api/user/${this.userId}`,requestOptions)
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.isAdmin === true) {
+            if(this.isAdmin === true) {
                 this.isAdmin = true
-                }
-            });
-        fetch(`http://localhost:3000/api/posts/${this.post._id}/comments`, requestOptions)
-        .then(response => response.json())
-        .then(data => {
-            for ( let comment of data) {
+            }
+            // const requestOptions = {
+            //     method: "GET",
+            //     headers: { "Content-Type": "application/json", "Authorization" : `Bearer ${this.token}` },
+            // }
+            // fetch(`http://localhost:3000/api/posts/${this.postData._id}/comments`, requestOptions)
+            // .then(response => response.json())
+            // .then(comments => {
+            // console.log(comments)
+            
+            for (let comment of this.postData.comments) {
                 if (comment.postId === this.post._id) {
-                    fetch(`http://localhost:3000/api/user/${comment.userId}`, requestOptions)
-                    .then(response => response.json())
-                    .then(data => {
-                        comment.infoUser = data
-                        if (comment.userId === this.userId || this.isAdmin ===  true) {
-                            comment.isCreator = true;
-                        } else {
-                            comment.isCreator = false;
+                    if (comment.userId === null) {
+                        comment.user[0].firstName = "Utilisateur"
+                        comment.user[0].lastName = "inconnu"   
                         }
-                        this.comments.push(comment)
-                        this.comments.sort(function (a, b) {
-                            return b.chrono - a.chrono;
-                        });
-                    })
                     
+                    if (comment.userId === this.userId || this.isAdmin === true) {
+                        comment.isCreator = true;
+                    } else {
+                        comment.isCreator = false;
+                    }
+                    this.comments.push(comment);
+                    this.comments.sort(function (a, b) {
+                    return b.chrono - a.chrono;
+                    });
                 }
             }
-        })
         },
         refreshPost(payload) {
             console.log('payload', payload);
@@ -102,7 +101,7 @@ export default {
             }
             this.postData.chrono = payload.chrono
             this.postData.date = payload.date
-            console.log(this.postData)
+          
         },
         toggleLike() {
             console.log(this.post._id)
@@ -135,6 +134,7 @@ export default {
             .then(data =>  {
                 console.log(data)
                 this.$refs.comment.value = ""
+                this.$emit('refreshData') 
                 this.fillComments()
             })
         },
@@ -160,9 +160,10 @@ export default {
         }
     },
     mounted() {
-       this.fillComments()
+        this.fillComments()
     },
-    emits: ["postDeleted"]
+    
+    emits: ["postDeleted", "refreshData"]
     
 }
 </script>

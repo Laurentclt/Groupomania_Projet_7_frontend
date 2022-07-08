@@ -11,7 +11,6 @@ export default {
         },
         action: {
             type : Function,
-            required: true
         }
     }
 }

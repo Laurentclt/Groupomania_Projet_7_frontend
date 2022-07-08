@@ -4,7 +4,7 @@
         <router-view/>
         <router-link to="/login"><ModalButton name="connexion"></ModalButton></router-link>
         <router-view/>
-        <ModalForm :isSignup="isSignup" :help="help" ref="form" />
+        <ModalForm :isSignup="isSignup" :help="help" ref="form" :action="getData"/>
         <SendButton :message="message" :action="getData"/>
     </div>
 </template>

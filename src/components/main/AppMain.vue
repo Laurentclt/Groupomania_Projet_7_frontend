@@ -5,7 +5,7 @@
     </div>
 
     <section class="all-posts">
-      <PostContent v-for="post in posts" v-bind:key="post._id" :post="post" @postDeleted="refreshDeletedPost"/>
+      <PostContent v-for="post in posts" v-bind:key="post._id" :post="post" :checkAdmin="this.isAdmin" @refreshData="refreshPage" @postDeleted="refreshPage"  />
     </section>
   </main>
   <ModalPost v-if="showModalPost" @close="refreshPage" />
@@ -33,9 +33,7 @@ export default {
     ModalPost,
   },
   methods: {
-    refreshDeletedPost() {
-      this.fillPage()
-    },
+    
     fillPage() {
     if (localStorage.getItem("token")) {
       this.connected = true;
@@ -50,9 +48,7 @@ export default {
     };
 
     fetch(
-      `http://localhost:3000/api/user/${this.userId}`,
-      requestOptions
-    )
+      `http://localhost:3000/api/user/${this.userId}`,requestOptions)
       .then((response) => response.json())
       .then((data) => {
         if (data.isAdmin === true) {
@@ -63,42 +59,33 @@ export default {
     fetch("http://localhost:3000/api/posts", requestOptions)
       .then((response) => response.json())
       .then((posts) => {
-        for (let post of posts) {
-          fetch(`http://localhost:3000/api/user/${post.userId}`, requestOptions)
-            .then((response) => response.json())
-            .then((dataUser) => {
-              if (dataUser === null) {
-                dataUser = {
-                  firstName: "Utilisateur",
-                  lastName: "inconnu",
-                };
-              }
-              return dataUser;
-            })
-            .then((dataUser) => {
-              if (post.userId === this.userId || this.isAdmin ===  true) {
-                post.isCreator = true;
-              } else {
-                post.isCreator = false;
-              }
-              let userWholiked = post.usersLiked;
-              post.isLiked = false;
-              for (let user of userWholiked) {
-                if (user === this.userId) {
-                  post.isLiked = true;
-                }
-              }
-              post["user"] = dataUser;
-
-              this.posts.push(post);
-              this.posts.sort(function (a, b) {
-                return b.chrono - a.chrono;
-              });
-            });
-        }
         console.log(posts)
+        for (let post of posts) {
+        if (post.user[0] === null) {
+          post.user[0].firstName = "utilisateur",
+          post.user[0].lastName = "inconnu"
+        }
+        if (post.userId === this.userId || this.isAdmin === true) {
+          post.isCreator = true;
+        } else {
+          post.isCreator = false;
+        }
+        
+        let userWholiked = post.usersLiked;
+            post.isLiked = false;
+            for (let user of userWholiked) {
+              if (user === this.userId) {
+                  post.isLiked = true;
+              }
+            }
+            this.posts.push(post);
+            this.posts.sort(function (a, b) {
+            return b.chrono - a.chrono;
+            });
+            console.log(post)
+          }
       });
-  },
+    },
     refreshPage() {
       this.showModalPost = false
       this.fillPage();

@@ -2,7 +2,7 @@
     <header>
         <div class="left">
             <a href="/app">Accueil</a>
-            <img class="photo-profil query"  :src="this.imageProfil" @click="toggle" >
+            <img class="photo-profil query" :src="this.imageProfil" @click="toggle" >
             <button class="toggle-btn-query" v-if="toggleOn" @click="disconnectUser">déconnexion</button>
         </div>
         <div class="middle">

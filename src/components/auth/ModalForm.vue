@@ -14,7 +14,7 @@
     </div>
     <div class="containerInput">
       <label for="">Mot de passe:</label>
-      <input type="password" class="modalForm" placeholder="8 caractères minimum (1 majuscule, 1 chiffre obligatoire)" ref="password" />
+      <input type="password" class="modalForm" placeholder="8 caractères minimum (1 majuscule, 1 chiffre obligatoire)" ref="password" @keyup.enter="action"/>
     </div>
   </div>
   <router-link to="/login"><p>{{ help }}</p></router-link>
@@ -31,6 +31,9 @@ export default {
     help: {
       type: String,
     },
+    action: {
+      type : Function,
+    }
    
   },
   

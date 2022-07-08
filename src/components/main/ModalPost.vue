@@ -2,7 +2,7 @@
     <div class="backdrop" @click.self="$emit('close')" >
         <div class="modal-window">
             <h1>Créer une publication</h1>
-            <textarea name="post" id="post" cols="30" rows="10" @click="resetText" v-model="message"></textarea>
+            <textarea name="post" id="post" cols="30" rows="10" placeholder="Quoi de neuf ?" @click="resetText" v-model="message"></textarea>
             <div class="container-btn">
                 <input type="file" class="add-image" ref="imageInput" @change="onChangeFile" name="IMAGE">
                 <button class="modal-btn" @click="publish" >publier</button>
@@ -16,7 +16,7 @@
 export default {
     data() {
         return {
-            message: "Quoi de neuf à nous raconter ?",
+            message: "",
             userId: localStorage.getItem("userId"),
             token : localStorage.getItem("token"),
             imageUrl: null,
