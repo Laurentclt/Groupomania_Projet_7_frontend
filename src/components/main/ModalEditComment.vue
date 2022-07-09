@@ -33,7 +33,7 @@ export default {
             const requestOptions = {
             method: "PUT",
             headers: { "Content-Type": "application/json", "Authorization": `bearer ${this.token}` },
-            body: JSON.stringify({content: this.message, userId: this.userId}),
+            body: JSON.stringify({content: this.message}),
             }
             fetch(`http://localhost:3000/api/posts/${this.commentData.postId}/comments/${this.commentData._id}`, requestOptions)
             .then(response => response.json())

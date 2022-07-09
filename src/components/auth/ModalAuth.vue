@@ -50,6 +50,7 @@ export default {
         this.password = this.$refs.form.$refs.password.value
         const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/
         const passwordChecked = this.password.match(re).input
+        console.log(passwordChecked)
         const loginView = () => this.$router.push('/login')
         const appView = () => this.$router.push('/app')
         

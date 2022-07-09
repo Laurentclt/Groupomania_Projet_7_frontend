@@ -35,9 +35,9 @@ export default {
         publish() {
             const formData = new FormData()
             formData.append("content", this.message)
-            formData.append("userId", this.userId) // probleme de secu
             if (this.file ) {
-                formData.append("IMAGE", this.file )}
+                formData.append("IMAGE", this.file )
+            }
             
             const requestOptions = {
             method: "PUT",
@@ -46,11 +46,16 @@ export default {
             }
             fetch(`http://localhost:3000/api/posts/${this.postData._id}`, requestOptions)
             .then(response => response.json())
-            .then(data => { console.log(data)
+            .then(data => { 
                 this.message = data.doc.content
                 console.log(data.doc)
+                if (data.doc.imageUrl !== "") {
                 this.file = data.doc.imageUrl
                 this.$emit('postUpdate', { message: this.message, image: this.file, chrono: data.doc.chrono, date: data.doc.date});
+                } else {
+                    this.$emit('postUpdate', { message: this.message, chrono: data.doc.chrono, date: data.doc.date});
+                }
+                
                 this.$emit('close')
                 })
             .catch((error) => console.log(error))

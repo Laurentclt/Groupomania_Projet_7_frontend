@@ -42,7 +42,6 @@ export default {
             formData.append("firstName", this.firstname)
             formData.append("lastName", this.lastname)
             formData.append("email", this.email)
-            formData.append("userId", this.userId) // probleme de secu
             if (this.file) {
                 formData.append("IMAGE", this.file )
             }
@@ -75,7 +74,7 @@ export default {
             const requestOptions = {
             method: "DELETE",
             headers: { "Content-Type": "application/json", "Authorization" : `Bearer ${this.token}` },
-            body: JSON.stringify({userId: this.userId})
+            
             };
             if (confirm("Êtes-vous sûr de vouloir supprimé votre compte ?") == true) {
                 fetch(`http://localhost:3000/api/user/${userId}`, requestOptions)

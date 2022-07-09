@@ -60,9 +60,7 @@ export default {
     components: {ButtonPost, CommentThread, ModalPostEdit},
     methods : {
         fillComments() {
-            if(this.isAdmin === true) {
-                this.isAdmin = true
-            }
+            this.comments = []
             // const requestOptions = {
             //     method: "GET",
             //     headers: { "Content-Type": "application/json", "Authorization" : `Bearer ${this.token}` },
@@ -71,7 +69,6 @@ export default {
             // .then(response => response.json())
             // .then(comments => {
             // console.log(comments)
-            
             for (let comment of this.postData.comments) {
                 if (comment.postId === this.post._id) {
                     if (comment.userId === null) {
@@ -109,7 +106,7 @@ export default {
             const requestOptions = {
             method: "POST",
             headers: { "Content-Type": "application/json", "Authorization" : `Bearer ${this.token}` },
-            body: JSON.stringify({userId: this.userId, postId: this.post._id})
+            body: JSON.stringify({ postId: this.post._id})
             }
             fetch(`http://localhost:3000/api/posts/${this.post._id}/like`, requestOptions)
             .then(response => response.json())
@@ -126,16 +123,17 @@ export default {
             const requestOptions = {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "Authorization" : `Bearer ${this.token}` },
-                body: JSON.stringify({userId: this.userId, content: this.$refs.comment.value, })
+                body: JSON.stringify({ content: this.$refs.comment.value, })
             }
         
             fetch(`http://localhost:3000/api/posts/${this.post._id}/comments` ,requestOptions)
             .then(response => response.json())
-            .then(data =>  {
-                console.log(data)
+            .then(commentUser =>  {
+                console.log(commentUser)
                 this.$refs.comment.value = ""
-                this.$emit('refreshData') 
+                this.postData.comments.push(commentUser)
                 this.fillComments()
+                console.log(this.comments)
             })
         },
         modifyPost() {
@@ -145,7 +143,6 @@ export default {
             const requestOptions = {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json", "Authorization" : `Bearer ${this.token}` },
-                body: JSON.stringify({userId: this.userId})
             }
             fetch(`http://localhost:3000/api/posts/${this.post._id}`, requestOptions)
             .then(response => response.json())
@@ -154,8 +151,10 @@ export default {
                 this.$emit('postDeleted')
             })
         },
-        refreshComments() {
-            this.comments = [] 
+        refreshComments(commentId) {
+            let cleanComments = this.postData.comments.filter(comment => comment._id !== commentId)
+            console.log({cleanComments})
+            this.postData.comments = cleanComments
             this.fillComments()
         }
     },

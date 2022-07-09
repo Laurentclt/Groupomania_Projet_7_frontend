@@ -47,13 +47,13 @@ export default {
             const requestOptions = {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json", "Authorization" : `Bearer ${this.token}` },
-                body: JSON.stringify({userId: this.userId})
+              
             }
             fetch(`http://localhost:3000/api/posts/${this.comment.postId}/comments/${this.comment._id}`, requestOptions)
             .then(response => response.json())
             .then(data =>  {
                 console.log(data)
-                this.$emit('commentDeleted')
+                this.$emit('commentDeleted', data.doc._id)
             })
         },
         modifyComment() {

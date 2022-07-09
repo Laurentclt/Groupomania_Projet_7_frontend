@@ -36,7 +36,6 @@ export default {
         publish() {
             const formData = new FormData()
             formData.append("content", this.message)
-            formData.append("userId", this.userId) // probleme de secu
             if (this.file ) {
                 formData.append("IMAGE", this.file )}
             const requestOptions = {
