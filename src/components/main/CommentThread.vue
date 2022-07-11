@@ -41,7 +41,6 @@ export default {
             }
             this.commentData.chrono = payload.chrono
             this.commentData.date = payload.date
-            console.log(this.postData)
         },
         deleteComment() {
             const requestOptions = {
@@ -53,7 +52,7 @@ export default {
             .then(response => response.json())
             .then(data =>  {
                 console.log(data)
-                this.$emit('commentDeleted', data.doc._id)
+                this.$emit('commentDeleted', data._id)
             })
         },
         modifyComment() {

@@ -5,10 +5,10 @@
     </div>
 
     <section class="all-posts">
-      <PostContent v-for="post in posts" v-bind:key="post._id" :post="post" :checkAdmin="this.isAdmin" @refreshData="refreshPage" @postDeleted="refreshPage"  />
+      <PostContent v-for="post in posts" v-bind:key="post._id" :post="post" :checkAdmin="this.isAdmin" @refreshData="refreshPage" />
     </section>
   </main>
-  <ModalPost v-if="showModalPost" @close="refreshPage" />
+  <ModalPost v-if="showModalPost" @close=" this.showModalPost = false" @newPost="addPost"/>
 </template>
 
 <script>
@@ -86,14 +86,27 @@ export default {
           }
       });
     },
-    refreshPage() {
-      this.showModalPost = false
-      this.fillPage();
+    refreshPage(postId) {
+      console.log(postId)
+      let cleanPosts = this.posts.filter(post => post._id !== postId)
+      console.log({cleanPosts})
+      this.posts = cleanPosts
     },
     toggleModal() {
       this.showModalPost = true;
-    
     },
+    addPost(payload) {
+      payload.comments = []
+      if (payload.userId === this.userId || this.isAdmin === true) {
+          payload.isCreator = true;
+        } else {
+          payload.isCreator = false;
+        }
+      this.posts.push(payload)
+      this.posts.sort(function (a, b) {
+        return b.chrono - a.chrono;
+      });
+    }
   },
   mounted() {
     this.fillPage()
@@ -112,6 +125,7 @@ export default {
   color: white;
 }
 .app {
+  max-width: 1440px;
   display: flex;
   flex-flow: column;
   max-width: 900px;

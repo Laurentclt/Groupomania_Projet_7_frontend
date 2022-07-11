@@ -5,7 +5,7 @@
             <textarea name="post" id="post" cols="30" rows="10" placeholder="Quoi de neuf ?" @click="resetText" v-model="message"></textarea>
             <div class="container-btn">
                 <input type="file" class="add-image" ref="imageInput" @change="onChangeFile" name="IMAGE">
-                <button class="modal-btn" @click="publish" >publier</button>
+                <button class="modal-btn" @mousedown="publish" >publier</button>
             </div>
         </div>
     </div>
@@ -49,6 +49,7 @@ export default {
             .then((data) =>  {
                 console.log(data)
                 this.$emit('close')
+                this.$emit('newPost', data)
             }
             )
             .catch((error) => console.log(error))
@@ -61,7 +62,7 @@ export default {
 
 <style scoped>
    .backdrop {
-    position: absolute;
+    position: fixed;
     left:0;
     top: 0;
     z-index: 4;
@@ -71,9 +72,10 @@ export default {
    } 
    .modal-window {
     display: flex;
-    margin: 20% auto;
-    flex-flow: column wrap;
+    margin: auto ;
     height: auto;
+    flex-flow: column wrap;
+    padding: 5% 15%;
     width: 50%;
    }
    .container-btn {

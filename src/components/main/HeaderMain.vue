@@ -14,10 +14,10 @@
         </div>
         <div class="right">
             <div class="profile-img" @click="toggle">
-                <img class="photo-profil"  :src="this.imageProfil" >
+                <img class="photo-profil" :src="this.imageProfil" >
             </div>
-            <div class="container-btn">
-                <button class="toggle-btn" v-if="toggleOn" @click="disconnectUser">déconnexion</button>
+            <div class="container-btn" v-if="toggleOn">
+                <button class="toggle-btn"  @click="disconnectUser">déconnexion</button>
             </div>
             <div class="container-profile">
                 <p class="full-name">{{firstname}} {{lastname}}</p>

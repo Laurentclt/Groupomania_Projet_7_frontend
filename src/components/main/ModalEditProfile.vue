@@ -99,8 +99,8 @@ export default {
     left:0;
     top: 0;
     z-index: 4;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     background-color: rgba(255, 255, 255, 0.901);
    } 
    .modal-window {
@@ -122,6 +122,7 @@ export default {
    }
    .container-btn {
     display: flex;
+    width: 100%;
    }
     .modal-btn {
     padding: 5px;

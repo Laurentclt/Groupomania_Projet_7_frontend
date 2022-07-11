@@ -129,7 +129,6 @@ export default {
             fetch(`http://localhost:3000/api/posts/${this.post._id}/comments` ,requestOptions)
             .then(response => response.json())
             .then(commentUser =>  {
-                console.log(commentUser)
                 this.$refs.comment.value = ""
                 this.postData.comments.push(commentUser)
                 this.fillComments()
@@ -148,7 +147,7 @@ export default {
             .then(response => response.json())
             .then(data =>  {
                 console.log(data)
-                this.$emit('postDeleted')
+                this.$emit('refreshData', data._id)
             })
         },
         refreshComments(commentId) {
@@ -162,7 +161,7 @@ export default {
         this.fillComments()
     },
     
-    emits: ["postDeleted", "refreshData"]
+    emits: [ "refreshData"]
     
 }
 </script>
@@ -269,11 +268,11 @@ export default {
         .container-edit-btn {
             display: flex;
             flex-flow: column;
-            justify-content: space-around;
+            
         }
         .btn {
             width: 100%;
-            margin-bottom: 50px;
+            margin-bottom: 30%;
         }
         .text-content {
             width: 70%;
