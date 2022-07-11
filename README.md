@@ -21,6 +21,7 @@ npm run lint
 ```
 ### Admin account :
 email: Admin01@gmail.com
+/
 password: Admin1234
 
 ### Customize configuration
