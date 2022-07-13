@@ -19,8 +19,12 @@ npm run build
 ```
 npm run lint
 ```
+<<<<<<< HEAD
 ### Admin Account :
 
+=======
+### Admin account :
+>>>>>>> 5601f01eac4bacbf9b83fdeddd48b26afb2a1eaf
 email: Admin01@gmail.com
 /
 password: Admin1234
