@@ -33,7 +33,12 @@ export default {
     ModalPost,
   },
   methods: {
-    
+    error()  {
+      if(!localStorage.getItem('token')) {
+      this.$router.push('/login')
+      } else return 0
+    },
+
     fillPage() {
     if (localStorage.getItem("token")) {
       this.connected = true;
@@ -109,7 +114,10 @@ export default {
     }
   },
   mounted() {
+    this.error()
+    if (this.error === 0 ) {
     this.fillPage()
+    }
   }
 };
 </script>
