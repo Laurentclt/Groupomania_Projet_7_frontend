@@ -34,15 +34,14 @@ export default {
   },
   methods: {
     error()  {
-      if(!localStorage.getItem('token')) {
+      if(localStorage.getItem('token') === null) {
       this.$router.push('/login')
-      } else return 0
+      } else {
+      this.connected = true;
+      return 0}
     },
 
     fillPage() {
-    if (localStorage.getItem("token")) {
-      this.connected = true;
-    }
     this.posts = []
     const requestOptions = {
       method: "GET",
@@ -114,8 +113,7 @@ export default {
     }
   },
   mounted() {
-    this.error()
-    if (this.error === 0 ) {
+    if (this.error() === 0 ) {
     this.fillPage()
     }
   }
