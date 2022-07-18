@@ -71,9 +71,12 @@ export default {
             // console.log(comments)
             for (let comment of this.postData.comments) {
                 if (comment.postId === this.post._id) {
-                    if (comment.userId === null) {
-                        comment.user[0].firstName = "Utilisateur"
-                        comment.user[0].lastName = "inconnu"   
+                    if (comment.user.length === 0) {
+                        comment.user= [];
+                        comment.user.push({firstName : "Utilisateur",
+                        lastName : "inconnu",
+                        imageProfil: null,   
+                        })
                         }
                     
                     if (comment.userId === this.userId || this.isAdmin === true) {

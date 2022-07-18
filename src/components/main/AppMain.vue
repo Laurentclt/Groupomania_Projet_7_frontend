@@ -65,9 +65,11 @@ export default {
       .then((posts) => {
         console.log(posts)
         for (let post of posts) {
-        if (post.user[0] === null) {
-          post.user[0].firstName = "utilisateur",
-          post.user[0].lastName = "inconnu"
+        if (post.user.length === 0) {
+          post.user = [];
+          post.user.push({firstName : "utilisateur",
+          lastName : "inconnu",
+          imageProfil : null})
         }
         if (post.userId === this.userId || this.isAdmin === true) {
           post.isCreator = true;
