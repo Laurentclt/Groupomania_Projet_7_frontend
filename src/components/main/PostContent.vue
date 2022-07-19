@@ -142,6 +142,9 @@ export default {
            this.showModalPostEdit = true
         },
         deletePost() {
+            if (confirm("supprimer cette publication ?") == false) {
+                return
+            } else {
             const requestOptions = {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json", "Authorization" : `Bearer ${this.token}` },
@@ -152,6 +155,7 @@ export default {
                 console.log(data)
                 this.$emit('refreshData', data._id)
             })
+            }
         },
         refreshComments(commentId) {
             let cleanComments = this.postData.comments.filter(comment => comment._id !== commentId)

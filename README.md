@@ -1,23 +1,17 @@
-# tuto-project
+# Projet7_Frontend
 
 ## Project setup
+
+Accédez sur https://nodejs.org/en/ pour télécharger puis installer Node.js sur votre machine.
+
+Ensuite installer NPM avec cette ligne de commande :
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Start server
 ```
 npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
 ```
 
 ### Admin account :

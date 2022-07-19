@@ -43,6 +43,9 @@ export default {
             this.commentData.date = payload.date
         },
         deleteComment() {
+            if (confirm("supprimer ce commentaire?") == false) {
+                return
+            } else {
             const requestOptions = {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json", "Authorization" : `Bearer ${this.token}` },
@@ -54,6 +57,7 @@ export default {
                 console.log(data)
                 this.$emit('commentDeleted', data._id)
             })
+            }
         },
         modifyComment() {
             this.showModalCommentEdit = true
